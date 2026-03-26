@@ -40,7 +40,7 @@ export default function Home() {
     setNutrition(null);
 
     try {
-      // 1. This "fetches" the data from your bridge (the API route)
+      //  Data "fetches"  from the bridge (the API route)
       const response = await fetch('/api/recipe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -49,10 +49,9 @@ export default function Home() {
 
       const data = await response.json();
 
-      // 2. This puts the AI's recipe into the "recipe" variable to show on screen
       setNutrition(data.nutrition || null);
       setRecipe(data.recipe || 'Failed to generate recipe.');
-      // Save to history (and keep only the 5 most recent)
+      // Save history 
       setSearchHistory((prev) => {
         const newHistory = [searchQuery, ...prev.filter(q => q !== searchQuery)];
         return newHistory.slice(0, 5);
@@ -152,9 +151,9 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] font-sans pb-20">
+    <div className="min-h-screen bg-[#f8f9fa] font-sans">
 
-      {/* HERO SECTION */}
+      {/* BIG SECTION */}
       <section className="relative w-full h-[500px] flex flex-col items-center justify-center text-center px-4 mb-16">
         <div
           className="absolute inset-0 z-0 bg-cover bg-center"
@@ -185,7 +184,7 @@ export default function Home() {
             <input
               type="text"
               placeholder="Ask Gemini to create a recipe... (e.g. Vegan Pad Thai)"
-              /* ✨ UPDATED: Darker text and placeholder for search bar */
+              /*  Darker text and placeholder for search bar */
               className="flex-1 py-3 px-2 outline-none text-gray-900 placeholder-gray-500 bg-transparent w-full"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -215,7 +214,7 @@ export default function Home() {
       {(recipe || isLoadingRecipe || searchHistory.length > 0) && (
         <div className="w-full max-w-7xl mx-auto mt-12 grid grid-cols-1 lg:grid-cols-5 gap-6 text-left">
 
-          {/* 1. LEFT COLUMN: Search History Sidebar */}
+          {/* Search History Sidebar */}
           <div className="lg:col-span-1 bg-white/80 backdrop-blur p-5 rounded-2xl shadow-sm border border-orange-100 h-fit">
             <h3 className="font-serif text-lg text-amber-900 mb-4 border-b border-orange-100 pb-2">
               Recent Cravings
@@ -237,7 +236,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 2. MIDDLE COLUMN: Compact Recipe Card */}
+          {/*  Compact Recipe Card */}
           <div className="lg:col-span-3">
             {isLoadingRecipe ? (
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-orange-100 flex flex-col items-center justify-center h-64 text-[#f08a6e]">
@@ -269,7 +268,7 @@ export default function Home() {
             )}
           </div>
 
-          {/* 3. RIGHT COLUMN: Nutrition Panel */}
+          {/* Nutrition Panel */}
           <div className="lg:col-span-1">
             {nutrition && !isLoadingRecipe && (
               <div className="bg-white/80 backdrop-blur p-5 rounded-2xl shadow-sm border border-orange-100 h-fit">
@@ -303,41 +302,41 @@ export default function Home() {
       {/* --- END NEW DASHBOARD --- */}
 
       {/* --- 7-DAY MEAL PLAN DASHBOARD --- */}
-{mealPlan && !isLoadingPlan && (
-  <div className="w-full max-w-7xl mx-auto mt-12 mb-20 px-4">
-    <h2 className="font-serif text-3xl text-amber-900 mb-8 text-center capitalize border-b border-orange-200 pb-4">
-      Your 7-Day {searchQuery} Plan
-    </h2>
-    
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {mealPlan.map((day, index) => (
-        <div key={index} className="bg-white p-6 rounded-2xl shadow-md border border-orange-100 hover:shadow-lg transition-shadow">
-          <div className="bg-[#f08a6e] text-white text-center font-bold py-2 rounded-lg mb-4 uppercase tracking-widest text-sm">
-            {day.day}
-          </div>
-          
-          <div className="flex flex-col gap-3 text-sm">
-            {['breakfast', 'lunch', 'dinner'].map((type) => (
-              <div key={type} className="bg-orange-50 p-3 rounded-lg border border-orange-100">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="text-[#f08a6e] font-bold text-xs uppercase">{type}</span>
-                  <button 
-                    onClick={() => handleSwapMeal(index, type as any, (day as any)[type])}
-                    disabled={swappingMeal.dayIndex === index && swappingMeal.mealType === type}
-                    className="text-[10px] bg-white border border-orange-200 px-2 py-0.5 rounded-md hover:bg-orange-100 transition-colors disabled:opacity-50"
-                  >
-                    {swappingMeal.dayIndex === index && swappingMeal.mealType === type ? '...' : 'Swap'}
-                  </button>
+      {mealPlan && !isLoadingPlan && (
+        <div className="w-full max-w-7xl mx-auto mt-12 mb-20 px-4">
+          <h2 className="font-serif text-3xl text-amber-900 mb-8 text-center capitalize border-b border-orange-200 pb-4">
+            Your 7-Day {searchQuery} Plan
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {mealPlan.map((day, index) => (
+              <div key={index} className="bg-white p-6 rounded-2xl shadow-md border border-orange-100 hover:shadow-lg transition-shadow">
+                <div className="bg-[#f08a6e] text-white text-center font-bold py-2 rounded-lg mb-4 uppercase tracking-widest text-sm">
+                  {day.day}
                 </div>
-                <span className="text-gray-700 font-medium">{(day as any)[type]}</span>
+
+                <div className="flex flex-col gap-3 text-sm">
+                  {['breakfast', 'lunch', 'dinner'].map((type) => (
+                    <div key={type} className="bg-orange-50 p-3 rounded-lg border border-orange-100">
+                      <div className="flex justify-between items-center mb-1">
+                        <span className="text-[#f08a6e] font-bold text-xs uppercase">{type}</span>
+                        <button
+                          onClick={() => handleSwapMeal(index, type as any, (day as any)[type])}
+                          disabled={swappingMeal.dayIndex === index && swappingMeal.mealType === type}
+                          className="text-[10px] bg-white border border-orange-200 px-2 py-0.5 rounded-md hover:bg-orange-100 transition-colors disabled:opacity-50"
+                        >
+                          {swappingMeal.dayIndex === index && swappingMeal.mealType === type ? '...' : 'Swap'}
+                        </button>
+                      </div>
+                      <span className="text-gray-700 font-medium">{(day as any)[type]}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             ))}
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-)}
+      )}
       {/* MENU / GRID */}
       <section className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
@@ -402,7 +401,7 @@ export default function Home() {
                   type="text"
                   value={newDishTitle}
                   onChange={e => setNewDishTitle(e.target.value)}
-                  /* ✨ UPDATED: text-gray-900 (dark text) and placeholder-gray-400 (visible placeholder) */
+
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 outline-none focus:border-[#f08a6e] text-gray-900 placeholder-gray-400"
                   placeholder="e.g. Avocado Toast"
                 />
@@ -414,7 +413,7 @@ export default function Home() {
                   required
                   value={newDishDesc}
                   onChange={e => setNewDishDesc(e.target.value)}
-                  /* ✨ UPDATED: text-gray-900 and placeholder-gray-400 */
+
                   className="w-full border border-gray-300 rounded-lg px-4 py-2 outline-none focus:border-[#f08a6e] resize-none h-24 text-gray-900 placeholder-gray-400"
                   placeholder="A short description of the dish..."
                 />
@@ -453,6 +452,53 @@ export default function Home() {
         </div>
       )}
 
+      {/* FOOTER */}
+      <footer className="w-full bg-[#f08a6e] text-white mt-20 py-12 px-4">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
+
+          {/* About */}
+          <div>
+            <h3 className="text-xl font-serif mb-3 text-white">Recipe Hub</h3>
+            <p className="text-orange-100 text-sm leading-relaxed">
+              An AI-powered recipe and meal planning web app. Discover dishes, generate step-by-step recipes, and plan your entire week's meals all in one place.
+            </p>
+          </div>
+
+          {/* Team */}
+          <div>
+            <h3 className="text-xl font-serif mb-3 text-white">Our Team</h3>
+            <ul className="text-orange-100 text-sm flex flex-col gap-2">
+              <li>👨‍💻 SK SAMIUR RAHMAN(233BCAB44)</li>
+              <li>👩‍💻 HEMARJUN L(233BCAB49)</li>
+              <li>👩‍💻 SHREYA BHARDWAJ(233BCAB42)</li>
+            </ul>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h3 className="text-xl font-serif mb-3 text-white">Contact</h3>
+            <ul className="text-orange-100 text-sm flex flex-col gap-2">
+              <li>
+                GitHub:
+                <a
+                  href="https://github.com/Samiur1155"
+                  target="_blank"
+                  className="ml-1 underline hover:text-white transition-colors"
+                >
+                  Samiur1155
+                </a>
+              </li>
+              <li>📧 Contact us via GitHub</li>
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom bar */}
+        <div className="max-w-6xl mx-auto mt-10 pt-6 border-t border-orange-300 text-center text-white text-xs">
+          © 2026 Recipe Hub — Built with Next.js, Tailwind CSS & Gemini AI
+        </div>
+      </footer>
     </div>
   );
 }
